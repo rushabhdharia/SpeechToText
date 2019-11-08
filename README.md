@@ -10,4 +10,4 @@ Mozilla - Common Voice - https://voice.mozilla.org/en/datasets
 #### Collaborators
 [Rushabh Dharia](https://github.com/rushabhdharia)  
 [Chaitanya Patil](https://github.com/chaitz333)  
-[Utsav Patel]()  
+[Utsav Patel](https://github.com/utsav37)  
