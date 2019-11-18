@@ -1,0 +1,13 @@
+# Folders
+LibriSpeech100/
+TIMIT_full/
+
+
+# Zip, flac, pickle, txt
+.zip
+.flac
+.pkl
+.txt
+
+# ipython nb checkpoints
+/.ipynb_checkpoints/*
