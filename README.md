@@ -11,6 +11,10 @@ Project on Automatic Speech Recogition for course Deep Learning Speech Processin
 
 2. https://web.stanford.edu/class/cs224s/lectures/224s.17.lec8.pdf
 
+3. https://arxiv.org/pdf/1803.10225.pdf
+
+
+
 #### Collaborators
 [Rushabh Dharia](https://github.com/rushabhdharia)  
 [Chaitanya Patil](https://github.com/chaitz333)  
