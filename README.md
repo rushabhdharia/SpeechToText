@@ -13,7 +13,10 @@ Project on Automatic Speech Recogition for course Deep Learning Speech Processin
 
 3. https://arxiv.org/pdf/1803.10225.pdf
 
-
+#### Technologies Used
+1. Miniconda
+2. Tensorflow 2
+[Setup Tensorflow 2 on Conda](https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/)
 
 #### Collaborators
 [Rushabh Dharia](https://github.com/rushabhdharia)  
