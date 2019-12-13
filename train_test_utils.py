@@ -17,7 +17,7 @@ def validate(model, x, y_true, input_len, label_len, y_strings, test = False):
     accuracy = 0.0
     
     for i in range(len(y_strings)):
-        predicted_sentence = indices_to_string(get_value(y_decode[i]).numpy())
+        predicted_sentence = indices_to_string(y_decode[i].numpy())
         accuracy += wer(predicted_sentence, y_strings[i])
         
         if test:
