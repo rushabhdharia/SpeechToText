@@ -3,6 +3,10 @@ import tensorflow as tf
 from tensorflow.keras.backend import ctc_batch_cost, ctc_decode, get_value
 from utils import wer, indices_to_string
 
+'''
+One Step of the Evaluation Function
+If in testing mode will Print the correct and predicted senences
+'''
 
 def validate(model, x, y_true, input_len, label_len, y_strings, test = False):
     input_len = np.expand_dims(input_len, axis = 1)
@@ -26,6 +30,11 @@ def validate(model, x, y_true, input_len, label_len, y_strings, test = False):
     
     return tf.reduce_mean(loss), accuracy/len(y_strings)    
 
+'''
+Evaluation Function
+Calcuates the Validation Loss and Accuracy.
+If in testing mode it calcuates the Validation Loss and Accuracy.
+'''
 
 def model_evaluate(model, val_ds, test = False):
     val_step = 0
@@ -42,26 +51,30 @@ def model_evaluate(model, val_ds, test = False):
     val_loss /= val_step
     val_accuracy /= val_step
 
-    tf.print(' Validation Loss:', val_loss, ' Validation WER: ', val_accuracy)
+    if test:
+        loss_tag = 'Test Loss:'
+        wer_tag = ' Test WER: '
+    else:
+        loss_tag = ' Validation Loss:' 
+        wer_tag = ' Validation WER: '
+
+    tf.print(loss_tag, val_loss, wer_tag, val_accuracy)
     
     return val_loss, val_accuracy
 
+'''
+One Step of Training Function
+Calcuates the Loss and Accuracy.
+Backpropagates the Loss using Tape
+'''
 
 def train_one_step(model, optimizer, x, y_true, input_len, label_len, y_strings):
-#     print('------------------------------')
-#     print(x.shape)
-#     print(y.shape)
-#     print(input_len.shape)
-#     print(label_len.shape)
     
     input_len = np.expand_dims(input_len, axis = 1)
     label_len = np.expand_dims(label_len, axis = 1)
-#     print(input_len.shape)
-#     print(label_len.shape)
-            
+
     with tf.GradientTape() as tape:
         y_pred = model(x)
-#         print(y_pred.shape)
         loss = ctc_batch_cost(y_true, y_pred, input_len, label_len)
     
     grads = tape.gradient(loss, model.trainable_variables)
@@ -70,18 +83,18 @@ def train_one_step(model, optimizer, x, y_true, input_len, label_len, y_strings)
     input_len = np.squeeze(input_len)
     y_decode = ctc_decode(y_pred, input_len)[0][0]
     
-#         print(y_decode)
-#         print(len(y_strings))
-    
     accuracy = 0.0
     
     for i in range(len(y_strings)):
         predicted_sentence = indices_to_string(y_decode[i].numpy())
-#             print(predicted_sentence)
         accuracy += wer(predicted_sentence, y_strings[i])
             
     return tf.reduce_mean(loss), accuracy/len(y_strings)
 
+
+'''
+Model Fit - Main Training Function
+'''
 
 def model_fit(model, optimizer, train_ds, manager, val_ds = None,epochs=20):
     

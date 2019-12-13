@@ -5,18 +5,37 @@ from tensorflow.keras.preprocessing.sequence import TimeseriesGenerator
 from string import ascii_uppercase
 import numpy as np
 
+'''
+Data Generator Class - 
+1. It's object returns the required input (X) and output(Y) in batches
+'''
+
 class DataGenerator(Sequence):
+
+    '''
+    Init Funtion - 
+    1. initializes the path from which data is to be read
+    2. initializes the lists of X and Y values to be read and sent to the model
+    '''
     
     def __init__(self, path, to_fit = True):
         self.path = path
         self.list_X, self.list_Y = self.getLists()
         self.to_fit = to_fit
     
-    
+    '''
+    Length Funtion - 
+    1. Returns the number of time the __getitem__ function can be called
+    '''
+
     def __len__(self):
         return len(self.list_X)
     
-    
+    '''
+    Get Item Funtion - 
+    1. Returns One Batch of X, true strings, input length and label length befor padding, and Y 
+    '''
+
     def __getitem__(self, index):      
         dict_X = self.get_dict_X(index)   
         dict_Y = self.get_dict_Y(index)
@@ -25,7 +44,11 @@ class DataGenerator(Sequence):
             
         return [X, y_strings, input_len, label_len], Y
     
-    
+    '''
+    Get Lists Funtion - 
+    1. Returns List X and List Y which contain the names of the files to be read 
+    ''' 
+
     def getLists(self):
         list_X = []
         list_Y = []
@@ -37,13 +60,23 @@ class DataGenerator(Sequence):
                 list_Y.append(item)
         return list_X, list_Y
     
-    
+    '''
+    Get Dictionary X Function - 
+    1. Opens the respective pickle file and returns the dictionary stored in it.
+    '''    
+
     def get_dict_X(self, index):
         file_name = self.path + self.list_X[index]
         with open(file_name, 'rb') as pickle_file:
             dict_X = pickle.load(pickle_file)
         return dict_X
     
+    '''
+    Get Dictionary Y Function - 
+    1. Opens the respective Text file
+    2. Creates a dictionary where the key is the file name and value is the true sentence
+    3. returns the dictionary.
+    '''        
     
     def get_dict_Y(self, index):
         filename = self.path + self.list_Y[index]
@@ -56,6 +89,17 @@ class DataGenerator(Sequence):
             dict_Y[key] = value
         return dict_Y
 
+    '''
+    Generate XY Function - 
+    1. First for loop - Get the maximum length of X and Y stored in the dictionaries. 
+    2. Second For Loop - 
+        i.   Append all true strings to the Y_string List
+        ii.  Append all true input and label lengths (before padding) to their respective lists
+        iii. Use the calculated max lengths for padding X and Y, so that all Xs are of the same shape and all Ys are of the same shape
+        iv.  Append the padded Xs and Ys to their respective lists
+
+    3. Stack and return the lists of X, Y, input_len, label_len, Y_strings    
+    '''       
     
     def generate_XY(self, dict_X, dict_Y):
         X = []
@@ -93,6 +137,11 @@ class DataGenerator(Sequence):
           
         return np.stack(X), np.stack(Y), np.stack(input_len), np.stack(label_len), Y_strings
 
+    '''
+    Generate Y Array - 
+    1. Use the max len to add black tokens in the end of the string
+    2. Convert the characters in the string to indices so that it can be used by the model  
+    '''       
     
     def generate_Y_array(self, sentence, maxlen):
         space_token = ' '
