@@ -11,3 +11,9 @@ TIMIT_full/
 
 # ipython nb checkpoints
 /.ipynb_checkpoints/*
+
+# pycache
+__pycache__/
+
+#Training Checkpoints
+training_checkpoints/
