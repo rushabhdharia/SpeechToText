@@ -30,13 +30,14 @@ ckpt = tf.train.Checkpoint(optimizer=optimizer, model = model)
 manager = tf.train.CheckpointManager(ckpt, ckpt_dir, max_to_keep = 2)    
 
 # Train Model
-losses, accuracies, val_losses, val_acc = model_fit(model, optimizer, train_data, manager, val_ds = val_data)
+losses, accuracies, val_losses, val_acc = model_fit(model, optimizer, train_data, manager, val_ds = val_data, epochs = 3)
 
 # To Do - Add Plots
 
-cpkt.restore(manager.latest_checkpoint)
+save_file = open('outputs/predictions.txt', 'w')
+ckpt.restore(manager.latest_checkpoint)
 
-_, acc = model_evaluate(model, test_data, test=True)
+_, acc = model_evaluate(model, test_data, test=True, save_file = save_file)
 
 print("Training Accuracy = ", acc)
 

@@ -5,10 +5,10 @@ from utils import wer, indices_to_string
 
 '''
 One Step of the Evaluation Function
-If in testing mode will Print the correct and predicted senences
+If in testing mode will save the correct and predicted senences to save file
 '''
 
-def validate(model, x, y_true, input_len, label_len, y_strings, test = False):
+def validate(model, x, y_true, input_len, label_len, y_strings, test = False, save_file = None):
     input_len = np.expand_dims(input_len, axis = 1)
     label_len = np.expand_dims(label_len, axis = 1)
     
@@ -25,18 +25,18 @@ def validate(model, x, y_true, input_len, label_len, y_strings, test = False):
         accuracy += wer(predicted_sentence, y_strings[i])
         
         if test:
-            print("Correct Sentence:", y_strings[i])
-            print("Predicted Sentence:", predicted_sentence)
+        	save_file.write("Correct Sentence:"+ str(y_strings[i]) + "\n")
+        	save_file.write("Predicted Sentence:" + predicted_sentence + "\n")
     
     return tf.reduce_mean(loss), accuracy/len(y_strings)    
 
 '''
 Evaluation Function
 Calcuates the Validation Loss and Accuracy.
-If in testing mode it calcuates the Validation Loss and Accuracy.
+If in testing mode it calcuates the Validation Loss and Accuracy and saves output to save file
 '''
 
-def model_evaluate(model, val_ds, test = False):
+def model_evaluate(model, val_ds, test = False, save_file = None):
     val_step = 0
     val_loss = 0.0
     val_accuracy = 0.0
@@ -44,7 +44,7 @@ def model_evaluate(model, val_ds, test = False):
     for inputs, y in val_ds:
         x, y_strings, ip_len, label_len = inputs
         val_step += 1       
-        loss, accuracy = validate(model, x, y, ip_len, label_len, y_strings, test)
+        loss, accuracy = validate(model, x, y, ip_len, label_len, y_strings, test, save_file)
         val_loss += loss
         val_accuracy += accuracy
                 

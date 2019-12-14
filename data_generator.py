@@ -148,6 +148,7 @@ class DataGenerator(Sequence):
         end_token = '>'
         blank_token = '%'
         apos_token = '\''
+        
         while len(sentence) != maxlen:
             sentence += blank_token
         sentence += end_token
