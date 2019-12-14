@@ -19,10 +19,10 @@ test_data = DataGenerator(test_path)
 
 # Build Model
 model = ASRModel()
-model.build(input_shape = (None, None, 20))
+# model.build(input_shape = [None, None, 20])
 optimizer = tf.keras.optimizers.Adam()
 
-print(model.summary())
+# print(model.summary())
 
 # Checkpoint
 ckpt_dir = './training_checkpoints'
@@ -30,7 +30,7 @@ ckpt = tf.train.Checkpoint(optimizer=optimizer, model = model)
 manager = tf.train.CheckpointManager(ckpt, ckpt_dir, max_to_keep = 2)    
 
 # Train Model
-losses, accuracies, val_losses, val_acc = model_fit(model, optimizer, train_data, manager, val_ds = val_data, epochs = 3)
+losses, accuracies, val_losses, val_acc = model_fit(model, optimizer, train_data, manager, val_ds = val_data, epochs = 20)
 
 # To Do - Add Plots
 
