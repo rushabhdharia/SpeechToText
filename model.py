@@ -32,7 +32,7 @@ class ASRModel(Model):
     def __init__(self, op_dim = 30):
         super(ASRModel, self).__init__()
         self.encoder = Encoder()
-        self.rnn = LSTM(16, return_sequences = True) #64 cloud
+        self.rnn = Bidirectional(LSTM(64, return_sequences = True)) #64 cloud
         self.layernorm = LayerNormalization()
         self.time_dense = TimeDistributed(Dense(op_dim))
         self.activation = Activation('softmax')
