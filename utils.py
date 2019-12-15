@@ -8,7 +8,7 @@ Word Error Rate
 '''
 
 def wer(s1, s2):
-
+    s1 = s1.replace('>', '')
     s1 =s1.upper()
     s2 =s2.upper()
     b = set(s1.split() + s2.split())

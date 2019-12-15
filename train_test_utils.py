@@ -15,8 +15,8 @@ def validate(model, x, y_true, input_len, label_len, y_strings, test = False, sa
     y_pred = model(x)
     loss = ctc_batch_cost(y_true, y_pred, input_len, label_len)
     
-    label_len = np.squeeze(label_len)
-    y_decode = ctc_decode(y_pred, label_len)[0][0]
+    input_len = np.squeeze(input_len)
+    y_decode = ctc_decode(y_pred, input_len)[0][0]
     
     accuracy = 0.0
     
@@ -80,8 +80,8 @@ def train_one_step(model, optimizer, x, y_true, input_len, label_len, y_strings)
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(grads, model.trainable_variables))
     
-    label_len = np.squeeze(label_len)
-    y_decode = ctc_decode(y_pred, label_len)[0][0]
+    input_len = np.squeeze(input_len)
+    y_decode = ctc_decode(y_pred, input_len)[0][0]
     
     accuracy = 0.0
     
