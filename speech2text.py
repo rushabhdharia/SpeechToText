@@ -7,6 +7,7 @@ from model import ASRModel
 print(tf.__version__)
 print(tf.test.is_gpu_available())
 
+
 #Paths
 train_path = "./LibriSpeech100/train/train_all/"
 dev_path = "./LibriSpeech100/dev/dev_all/"

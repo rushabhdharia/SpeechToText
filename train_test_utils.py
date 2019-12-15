@@ -96,13 +96,18 @@ def train_one_step(model, optimizer, x, y_true, input_len, label_len, y_strings)
 Model Fit - Main Training Function
 '''
 
-def model_fit(model, optimizer, train_ds, manager, val_ds = None,epochs=20):
+def model_fit(model, optimizer, train_ds, manager, ckpt, val_ds = None,epochs=20):
     
     losses = []
     accuracies = []
     val_losses = []
     val_acc = []
     
+    ckpt.restore(manager.latest_checkpoint)
+    if manager.latest_checkpoint:
+        print("Restored from {}".format(manager.latest_checkpoint))
+    else:
+        print("Initializing from scratch.")
     
     for epoch in range(epochs):
         step = 0
@@ -123,6 +128,11 @@ def model_fit(model, optimizer, train_ds, manager, val_ds = None,epochs=20):
         
         losses.append(epoch_loss)
         accuracies.append(epoch_accuracy)
+
+        ckpt.epoch.assign_add(1)
+        if int(ckpt.epoch) % 1 == 0:
+            save_path = manager.save()
+            print("Saved checkpoint for epoch {}: {}".format(int(ckpt.epoch), save_path))
         
         tf.print('Epoch: ', epoch+1, ' Loss:', epoch_loss, ' WER: ', epoch_accuracy)
         
@@ -132,8 +142,6 @@ def model_fit(model, optimizer, train_ds, manager, val_ds = None,epochs=20):
             val_losses.append(val_loss)
             val_acc.append(val_accuracy)
             
-        if (epoch + 1) % 2 == 0:
-            manager.save()
         
                 
     if not val_ds:    
