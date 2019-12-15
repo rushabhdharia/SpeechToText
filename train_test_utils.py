@@ -134,7 +134,7 @@ def model_fit(model, optimizer, train_ds, manager, ckpt, val_ds = None,epochs=20
             save_path = manager.save()
             print("Saved checkpoint for epoch {}: {}".format(int(ckpt.epoch), save_path))
         
-        tf.print('Epoch: ', epoch+1, ' Loss:', epoch_loss, ' WER: ', epoch_accuracy)
+        tf.print('Epoch: ', ckpt.epoch, ' Loss:', epoch_loss, ' WER: ', epoch_accuracy)
         
         
         if val_ds:

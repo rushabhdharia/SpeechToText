@@ -26,7 +26,7 @@ optimizer = tf.keras.optimizers.Adam()
 
 # Checkpoint
 ckpt_dir = './training_checkpoints'
-ckpt = tf.train.Checkpoint(optimizer=optimizer, model = model)
+ckpt = tf.train.Checkpoint(epoch = tf.Variable(0), optimizer=optimizer, model = model)
 manager = tf.train.CheckpointManager(ckpt, ckpt_dir, max_to_keep = 2)    
 
 # Train Model
