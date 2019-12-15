@@ -23,5 +23,4 @@ Project on Automatic Speech Recogition for course Deep Learning Speech Processin
 
 ## Collaborators
 [Rushabh Dharia](https://github.com/rushabhdharia)  
-[Chaitanya Patil](https://github.com/chaitz333)  
-[Utsav Patel](https://github.com/utsav37)  
+[Chaitanya Patil](https://github.com/chaitz333)   
