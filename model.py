@@ -32,8 +32,12 @@ class ASRModel(Model):
     def __init__(self, op_dim = 30):
         super(ASRModel, self).__init__()
         self.encoder = Encoder()
-        self.rnn = Bidirectional(LSTM(64, return_sequences = True)) #64 cloud
-        self.layernorm = LayerNormalization()
+        self.brnn_1 = Bidirectional(LSTM(128, return_sequences = True)) #64 cloud
+        self.layernorm_1 = LayerNormalization()
+        self.brnn_2 = Bidirectional(LSTM(64, return_sequences = True))
+        self.layernorm_2 = LayerNormalization()
+        self.brnn_3 = Bidirectional(LSTM(32, return_sequences = True)) 
+        self.layernorm_3 = LayerNormalization()
         self.time_dense = TimeDistributed(Dense(op_dim))
         self.activation = Activation('softmax')
 
@@ -42,8 +46,12 @@ class ASRModel(Model):
         x = self.encoder(inputs)
         batchsize, time_seq, width, channels = x.shape
         x = tf.reshape(x, shape = [batchsize, time_seq, width * channels])
-        x = self.rnn(x)
-        x = self.layernorm(x)
+        x = self.brnn_1(x)
+        x = self.layernorm_1(x)
+        x = self.brnn_2(x)
+        x = self.layernorm_2(x)
+        x = self.brnn_3(x)
+        x = self.layernorm_3(x)
         x = self.time_dense(x)
         x = self.activation(x) 
         return x

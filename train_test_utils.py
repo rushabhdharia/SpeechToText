@@ -119,8 +119,8 @@ def model_fit(model, optimizer, train_ds, manager, ckpt, val_ds = None,epochs=20
             loss, accuracy = train_one_step(model, optimizer, x, y, ip_len, label_len, y_strings)
             epoch_loss += loss
             epoch_accuracy += accuracy
-            if step % 78 == 0:
-                print(step)
+            if step % 713 == 0:
+                print(step//713)
                 
             
         epoch_loss /= step
